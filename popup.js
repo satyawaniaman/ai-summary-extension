@@ -24,9 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
         currentWindow: true,
       });
 
-      console.log("Current tab:", tab.url);
-
-      // Check if we can access this tab
       if (
         tab.url.startsWith("chrome://") ||
         tab.url.startsWith("chrome-extension://") ||
@@ -46,10 +43,8 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
 
-      // Get selected summary length
       const summaryLength = document.getElementById("summary-length").value;
 
-      // Check if API key is set
       resultElement.textContent = "Checking API key...";
       const storageResult = await new Promise((resolve) => {
         chrome.storage.sync.get(["geminiApiKey"], resolve);
@@ -61,35 +56,21 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
 
-      // Always inject fresh content script to avoid conflicts
       resultElement.textContent = "Injecting content script...";
-      console.log("Injecting content script into tab:", tab.id);
-
       await injectContentScript(tab.id);
 
-      // Wait for content script to initialize
       resultElement.textContent = "Initializing...";
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
-      // Test connection
       resultElement.textContent = "Testing connection...";
-      console.log("Testing connection to content script");
-
       try {
-        const pingResponse = await sendMessageWithRetry(
-          tab.id,
-          { action: "ping" },
-          3000
-        );
-        console.log("Ping successful:", pingResponse);
+        await sendMessageWithRetry(tab.id, { action: "ping" }, 3000);
       } catch (pingError) {
-        console.error("Ping failed:", pingError);
         throw new Error(
           "Content script failed to load. Please refresh the page and try again."
         );
       }
 
-      // Send summarize request
       resultElement.textContent = "Generating summary...";
       await sendSummarizeRequest(
         tab.id,
@@ -98,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     } catch (error) {
       resultElement.textContent = "Error: " + error.message;
-      console.error("Popup error:", error);
     } finally {
       summarizeButton.disabled = false;
       summarizeButton.textContent = "Summarize";
@@ -121,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
               )
             );
           } else {
-            console.log("Content script injected successfully");
             resolve(result);
           }
         }
@@ -200,8 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 1500);
       })
       .catch((err) => {
-        console.error("Failed to copy text: ", err);
-        // Fallback for older browsers
         const textArea = document.createElement("textarea");
         textArea.value = summaryText;
         document.body.appendChild(textArea);
@@ -213,9 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
           setTimeout(() => {
             copyButton.textContent = originalText;
           }, 1500);
-        } catch (fallbackError) {
-          console.error("Fallback copy failed:", fallbackError);
-        }
+        } catch (fallbackError) {}
         document.body.removeChild(textArea);
       });
   });

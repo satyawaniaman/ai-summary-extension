@@ -5,14 +5,12 @@ let personaLoaded = false;
 
 // Load the persona file when the extension is installed or updated
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("AI Summarize Extension: Background script installed");
   loadPersonaFile();
   chrome.storage.sync.get("geminiApiKey", (result) => {
     if (!result.geminiApiKey) {
       chrome.tabs.create({ url: "options.html" });
     }
   });
-  console.log("AI summary is installed");
 });
 
 // Also load the persona when the service worker starts (after browser restart)
@@ -27,12 +25,7 @@ async function loadPersonaFile() {
   personaLoading = true;
 
   try {
-    console.log("AI Summarize Extension: Loading persona file");
-
-    // Check if persona.txt exists in the manifest
     const url = chrome.runtime.getURL("persona.txt");
-    console.log("AI Summarize Extension: Persona URL:", url);
-
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -48,12 +41,7 @@ async function loadPersonaFile() {
     }
 
     personaLoaded = true;
-    console.log("AI Summarize Extension: Persona loaded successfully", {
-      length: personaText.length,
-      preview: personaText.substring(0, 100) + "...",
-    });
   } catch (error) {
-    console.error("AI Summarize Extension: Error loading persona file:", error);
     personaText =
       "You are a helpful AI assistant that provides concise and accurate summaries."; // Fallback
     personaLoaded = true; // Set to true even with fallback to prevent infinite retries
@@ -65,11 +53,7 @@ async function loadPersonaFile() {
 // Listen for messages from popup or content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "getPersona") {
-    console.log("AI Summarize Extension: Received request for persona");
-
-    // If persona is not loaded and not currently loading, try loading it
     if (!personaLoaded && !personaLoading) {
-      console.log("AI Summarize Extension: Persona not loaded, loading now");
       loadPersonaFile()
         .then(() => {
           sendResponse({
@@ -79,10 +63,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
         })
         .catch((error) => {
-          console.error(
-            "AI Summarize Extension: Failed to load persona on demand:",
-            error
-          );
           sendResponse({
             persona:
               "You are a helpful AI assistant that provides concise and accurate summaries.",

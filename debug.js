@@ -7,21 +7,17 @@
 
 // Test summarization with direct Gemini API call
 async function testSummarize(apiKey) {
-  console.log("Testing summarization...");
-
   if (!apiKey) {
     console.error("No API key provided. Usage: testSummarize('YOUR_API_KEY')");
     return;
   }
 
-  // Extract content from the page
   const pageTitle = document.title;
-  const pageContent = document.body.innerText.substring(0, 10000); // Limit to 10k chars
+  const pageContent = document.body.innerText.substring(0, 10000);
 
   console.log("Page title:", pageTitle);
   console.log("Content length:", pageContent.length);
 
-  // Simple test prompt
   const prompt = `
 Please summarize the following content in a concise manner.
 
@@ -34,7 +30,6 @@ Please provide a brief summary of the key points.
 `;
 
   try {
-    // Call Gemini API
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
@@ -64,7 +59,6 @@ Please provide a brief summary of the key points.
 
     const data = await response.json();
 
-    // Extract and print the response
     if (
       data.candidates &&
       data.candidates[0] &&
