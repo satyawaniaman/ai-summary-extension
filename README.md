@@ -1,45 +1,23 @@
-# AI Summarize Extension
+# ChaiCode AI Summarizer - Privacy Policy
 
-A Chrome extension that summarizes web content using the Gemini API, in the style of Hitesh Choudhary from ChaiCode.
+This repository hosts the privacy policy for the ChaiCode AI Summarizer Chrome extension.
 
-## Features
+## About ChaiCode AI Summarizer
 
-- Summarize any webpage with a single click
-- Choose between short and detailed summaries
-- Content is summarized in Hitesh Choudhary's signature style
-- Dark mode support
-- Easy-to-use interface
+ChaiCode AI Summarizer is a Chrome extension that uses Google's Gemini API to summarize web content in Hitesh Choudhary's conversational Hinglish style. The extension provides quick and concise summaries of any webpage, making it easier to digest content.
 
-## How It Works
+## Privacy Policy
 
-1. The extension uses a persona defined in `persona.txt` that captures Hitesh Choudhary's teaching and communication style
-2. When you click "Summarize," the extension:
-   - Extracts the main content from the current webpage
-   - Sends the content to the Gemini API along with the persona instructions
-   - Displays the AI-generated summary in Hitesh's style
+Our privacy policy explains how we collect, use, and protect your information when you use our Chrome extension. You can view the privacy policy [here](https://yourusername.github.io/chaicode-privacy-policy/).
 
-## Setup
+## Installation
 
-1. Install the extension
-2. Input your Gemini API key in the options page (accessible by clicking the gear icon)
-3. Navigate to any webpage you want to summarize
-4. Click the extension icon to open the popup
-5. Select summary length and click "Summarize"
-6. Copy the summary with the copy button
+The ChaiCode AI Summarizer is available on the Chrome Web Store. [Install it here](https://chrome.google.com/webstore/detail/your-extension-id).
 
-## Files and Structure
+## Contact
 
-- `popup.html/js`: The main UI that appears when clicking the extension icon
-- `options.html/js`: Settings page for the API key and theme
-- `content.js`: Extracts content from webpages and communicates with the Gemini API
-- `background.js`: Handles loading the persona and background tasks
-- `persona.txt`: Contains the Hitesh Choudhary persona instructions for the AI
-- `manifest.json`: Extension configuration
+If you have any questions about our privacy policy or the extension, please feel free to open an issue in this repository or contact us directly at your-email@example.com.
 
-## Customizing the Persona
+## License
 
-The personality and style of the summaries are defined in `persona.txt`. You can edit this file to adjust how the summaries are written while maintaining Hitesh Choudhary's style.
-
-## Created By
-
-Aman Satyawani
+© 2024 ChaiCode AI Summarizer. All rights reserved.
