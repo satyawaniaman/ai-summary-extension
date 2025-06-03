@@ -3,9 +3,270 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>extension options</title>
+    <title>AI Summarize Extension Options</title>
+    <style>
+      /* Set box-sizing globally */
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #ffa500;
+        --secondary-color: #333;
+        --text-color: #333;
+        --bg-color: #f8f8f8;
+        --input-bg: #fff;
+        --card-bg: #fff;
+        --border-color: #ddd;
+      }
+
+      .dark-theme {
+        --text-color: #f8f8f8;
+        --bg-color: #121212;
+        --input-bg: #333;
+        --card-bg: #1e1e1e;
+        --border-color: #444;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--primary-color);
+      }
+
+      .tagline {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        color: var(--text-color);
+        opacity: 0.8;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 1rem;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+        margin: 0 0 8px 0;
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
+      }
+
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        margin: 16px 0;
+      }
+
+      .toggle {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 26px;
+      }
+
+      .toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 34px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background-color: var(--primary-color);
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px var(--primary-color);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(24px);
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: #fff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 100%;
+      }
+
+      button:hover {
+        background-color: #e69500;
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .status {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        text-align: center;
+        min-height: 20px;
+      }
+
+      .success {
+        color: #2ecc71;
+      }
+
+      .error {
+        color: #e74c3c;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        color: var(--text-color);
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      .hint {
+        font-size: 0.8rem;
+        color: var(--text-color);
+        opacity: 0.7;
+        margin-top: 4px;
+      }
+
+      .hint a {
+        color: var(--primary-color);
+        text-decoration: none;
+      }
+
+      .hint a:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
-    <h1>hello from options.html</h1>
+    <div class="container">
+      <header>
+        <h1>AI Summarize</h1>
+        <p class="tagline">Powered by Chai Code</p>
+      </header>
+
+      <div class="card">
+        <div class="form-group">
+          <label for="api-key">Gemini API Key</label>
+          <input
+            type="text"
+            id="api-key"
+            placeholder="Enter your Gemini API key"
+          />
+          <p class="hint">
+            Get your API key from
+            <a href="https://aistudio.google.com/app/apikey" target="_blank"
+              >Google AI Studio</a
+            >
+          </p>
+        </div>
+
+        <div class="form-group toggle-container">
+          <label for="dark-mode">Dark Mode</label>
+          <label class="toggle">
+            <input type="checkbox" id="dark-mode" />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <button id="save-button">Save Settings</button>
+        <div id="status" class="status"></div>
+      </div>
+
+      <footer>
+        <p>Made with ☕ by Aman Satyawani</p>
+      </footer>
+    </div>
+
+    <script src="options.js"></script>
   </body>
 </html>

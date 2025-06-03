@@ -3,78 +3,179 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>popup.html</title>
+    <title>AI Summarize</title>
+    <style>
+      :root {
+        --primary-color: #ffa500;
+        --secondary-color: #333;
+        --text-color: #333;
+        --bg-color: #f8f8f8;
+        --input-bg: #fff;
+        --card-bg: #fff;
+        --border-color: #ddd;
+      }
+
+      .dark-theme {
+        --text-color: #f8f8f8;
+        --bg-color: #121212;
+        --input-bg: #333;
+        --card-bg: #1e1e1e;
+        --border-color: #444;
+      }
+
+      body {
+        width: 350px;
+        height: 400px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 16px;
+        transition: all 0.3s ease;
+        line-height: 1.6;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+        color: var(--primary-color);
+      }
+
+      .tagline {
+        font-size: 0.9rem;
+        margin: 0 0 16px 0;
+        opacity: 0.8;
+      }
+
+      .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 16px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      select {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        font-size: 0.9rem;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 8px center;
+        background-size: 16px;
+        cursor: pointer;
+      }
+
+      select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      button:hover {
+        background-color: #e69500;
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      #result {
+        background-color: var(--input-bg);
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        padding: 12px;
+        font-family: "Roboto Mono", monospace;
+        font-size: 0.9rem;
+        min-height: 120px;
+        max-height: 200px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        margin: 0 0 16px 0;
+        color: var(--text-color);
+      }
+
+      #copy {
+        display: block;
+        margin: 0 auto;
+        width: 120px;
+      }
+
+      footer {
+        text-align: center;
+        font-size: 0.8rem;
+        margin-top: 16px;
+        opacity: 0.7;
+      }
+
+      .gear-icon {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+        color: var(--text-color);
+      }
+
+      .gear-icon:hover {
+        opacity: 1;
+      }
+    </style>
   </head>
-  <style>
-    body {
-      width: 300px;
-      height: 300px;
-      background-color: #f0f0f0;
-      padding: 10px;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    .summary-container {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .summary-container select {
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .summary-container button {
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-    }
-    .summary-container button:hover {
-      background-color: #ccc;
-    }
-    .summary-container button:active {
-      background-color: #aaa;
-    }
-    .summary-container pre {
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .summary-container pre:hover {
-      background-color: #f0f0f0;
-    }
-    .summary-container pre:active {
-      background-color: #e0e0e0;
-    }
-    #copy {
-      padding: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      cursor: pointer;
-      margin-top: 10px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      width: 100px;
-    }
-    #copy:hover {
-      background-color: #ccc;
-    }
-    #copy:active {
-      background-color: #aaa;
-    }
-  </style>
   <body>
-    <h1>AI Summary</h1>
-    <div class="summary-container">
-      <select id="summary-length">
-        <option value="short">Short</option>
-        <option value="detailed">Detailed</option>
-      </select>
-      <button id="summarize">Summarize</button>
+    <div class="gear-icon" id="options-link" title="Open Settings">⚙️</div>
+
+    <header>
+      <h1>AI Summarize</h1>
+      <p class="tagline">Powered by Chai Code</p>
+    </header>
+
+    <div class="card">
+      <div class="controls">
+        <select id="summary-length">
+          <option value="short">Short Summary</option>
+          <option value="detailed">Detailed Summary</option>
+        </select>
+        <button id="summarize">Summarize</button>
+      </div>
+
+      <pre id="result">Select a type and click summarize to get started</pre>
+
+      <button id="copy">Copy</button>
     </div>
-    <pre id="summary">Select a type and click summarize to get started</pre>
-    <button id="copy">Copy</button>
+
+    <footer>Made with ☕ by Aman Satyawani</footer>
+
     <script src="popup.js"></script>
   </body>
 </html>
